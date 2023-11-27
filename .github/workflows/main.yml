@@ -3,21 +3,36 @@ name: Deploy to Raspberry Pi
 on:
   push:
     branches:
-      - main
+      - main  # Change this to your main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up SSH key
-      uses: webfactory/ssh-agent@v0.5.1
-      with:
-        ssh-private-key: ${{ secrets.SSH_KEY }}
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa 141.134.173.203 >> ~/.ssh/known_hosts
 
-    - name: Connect to Raspberry Pi and Pull Repository
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.USERNAME }}@${{ secrets.IP }} "cd /home/raspberry/portfolio/blog && git pull"
+      - name: Install openssh-client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openssh-client
+
+      - name: Deploy to Raspberry Pi
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa raspberry@141.134.173.203 "
+            ls -la
+          "
+
+      - name: Build Docker image and deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa raspberry@141.134.173.203 "
+            ls -la
+          "
