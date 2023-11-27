@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-
+import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc'
 
 export async function generateStaticParams(){
@@ -29,15 +29,21 @@ function getPost({slug}: {slug: string}){
 
 }
 
-
-export default function Page({ params } :any){
-    const props = getPost( params);
+export default function Page({ params }: any) {
+    const props = getPost(params);
 
     return (
-        <article className='prose prose-sm md:prose-base lg:prose-lg prose-slate !prose-invert mx-auto'>
-            <h1>{props.fontMatter.title}</h1>
-
-            <MDXRemote source={props.content} ></MDXRemote>
-        </article>
-    )
+        <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between my-8">
+                <Link href="/">
+                    <button className="text-blue-500 hover:underline">← Back to Overview</button>
+                </Link>
+                {/* Add more buttons or navigation elements as needed */}
+            </div>
+            <article className="max-w-screen-lg mx-auto prose prose-sm md:prose-base lg:prose-lg prose-slate dark:prose-invert mt-8 mb-20">
+                <h1>{props.fontMatter.title}</h1>
+                <MDXRemote source={props.content}></MDXRemote>
+            </article>
+        </div>
+    );
 }
