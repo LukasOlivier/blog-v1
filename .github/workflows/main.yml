@@ -20,4 +20,4 @@ jobs:
 
     - name: Connect to Raspberry Pi and Pull Repository
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} raspberry@141.134.173.203 "cd /home/raspberry/portfolio/blog && git pull"
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.USERNAME }}@${{ secrets.IP }} "cd /home/raspberry/portfolio/blog && git pull"
