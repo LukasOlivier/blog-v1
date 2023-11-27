@@ -16,7 +16,7 @@ jobs:
                     uses: tiyee/action-ssh@v1.0.1
                     with:
                       # Command to execute on the remote server.
-                      command: 'shopt -s dotglob && rm -rf /home/raspberry/portfolio/blog/* && cd /home/raspberry/portfolio/blog && git clone https://github.com/LukasOlivier/blog.git .'
+                      command: 'shopt -s dotglob && rm -rf /home/raspberry/portfolio/blog/* && cd /home/raspberry/portfolio/blog && git clone https://github.com/LukasOlivier/blog.git . && docker build -t test-next-tailwind . && docker run --publish 8080:3000 docker_nextjs:developement'
                       # Hostname or IP address of the server.
                       host: '141.134.173.203'
                       # Username for authentication.
