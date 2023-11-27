@@ -13,16 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh/
-        echo "$SSH_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -t rsa 141.134.173.203 >> ~/.ssh/known_hosts
-
     - name: Deploy to Raspberry Pi
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa raspberry@141.134.173.203 "
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} raspberry@141.134.173.203 "
           shopt -s dotglob &&
           mkdir /home/raspberry/portfolio/blog &&
           rm -rf /home/raspberry/portfolio/blog/* &&
@@ -31,7 +24,7 @@ jobs:
 
     - name: Build Docker image and deploy
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa raspberry@141.134.173.203 "
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} raspberry@141.134.173.203 "
           cd /home/raspberry/portfolio/blog &&
           docker build -t test-next-tailwind . &&
           docker run --publish 8080:3000 docker_nextjs:developement "
