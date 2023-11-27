@@ -16,11 +16,8 @@ jobs:
     - name: Set up SSH key
       uses: webfactory/ssh-agent@v0.5.1
       with:
-        ssh-private-key: ${{ secrets.SSH_KEY }}
+        ssh-private-key: ${{ secrets.YOUR_SSH_KEY }}
 
     - name: Connect to Raspberry Pi and Pull Repository
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} raspberry@141.134.173.203 "
-        cd /home/raspberry/portfolio/blog 
-        && git clone https://github.com/LukasOlivier/blog.git . "
-
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_SSH_KEY }} raspberry@141.134.173.203 "cd /home/raspberry/portfolio/blog && git pull"
