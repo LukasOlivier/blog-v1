@@ -22,7 +22,7 @@ jobs:
       - name: Deploy via SSH
         uses: tiyee/action-ssh@v1.0.1
         with:
-          command: 'shopt -s dotglob && rm -rf /home/raspberry/portfolio/blog/* && cd /home/raspberry/portfolio/blog && git clone https://github.com/LukasOlivier/blog.git . && docker build -t docker_nextjs:development . &&  docker stop react-blog && docker rm react-blog && docker run --name react-blog -d -p 8080:3000 docker_nextjs:development'
+          command: 'shopt -s dotglob && rm -rf /home/raspberry/portfolio/blog/* && cd /home/raspberry/portfolio/blog && git clone https://github.com/LukasOlivier/blog.git . && docker build -t docker_nextjs:development . &&  docker stop react-blog && docker rm react-blog && docker run --name react-blog -d -p 3030:3000 docker_nextjs:development'
           host: '141.134.173.203'
           username: 'raspberry'
           port: '22'
