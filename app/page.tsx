@@ -20,13 +20,13 @@ export default function Home() {
   });
 
   return (
-    <div className="max-w-4xl mx-auto mt-8">
+    <div className="max-w-4xl mx-auto mt-8 p-8 lg:p-0">
       <header className="mb-8">
         <nav className='flex flex-row items-center justify-between'>
           <img className='w-10' src="/img/logo.png" alt="logo" />
-          <ul className='flex flex-row items-center gap-4 '>
+          <ul className='flex flex-row items-center gap-4'>
             <li className='font-bold transition-transform transform hover:scale-110'><a href="https://lukasolivier.be/#top">Home</a></li>
-            <li className='font-bold transition-transform transform hover:scale-110'><a href="https://lukasolivier.be/#projects">Projects</a></li>
+            <li className='font-bold transition-transform transform hover:scale-110'><a href="https://lukasolivier.be/#project-container">Projects</a></li>
             <li className='font-bold transition-transform transform hover:scale-110'><a href="https://lukasolivier.be/#about-me">About me</a></li>
             <li className='font-bold transition-transform transform hover:scale-110'><a href="https://lukasolivier.be/#contact">Contact</a></li>
           </ul>
