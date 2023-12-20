@@ -1,7 +1,7 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'NextJs Blog Lukas Olivier',
+  title: "Lukas Olivier's Blog",
   description: 'Read everything about Lukas Olivier, student at Howest Brugge',
 }
 
