@@ -9,7 +9,7 @@ export default function Home() {
 
   const files = fs.readdirSync(path.join(blogDir));
 
-  const blogs = files.map((filename) => {
+  let blogs = files.map((filename) => {
     const fileContent = fs.readFileSync(path.join(blogDir, filename), 'utf-8');
 
     const { data: frontMatter } = matter(fileContent);
@@ -18,6 +18,8 @@ export default function Home() {
       slug: filename.replace('.mdx', ''),
     };
   });
+  
+  blogs = blogs.reverse();
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-8 lg:p-0">

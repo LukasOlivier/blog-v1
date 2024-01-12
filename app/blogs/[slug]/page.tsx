@@ -38,7 +38,6 @@ export default function Page({ params }: any) {
                 <Link href="/">
                     <button className="text-blue-500 hover:underline">← Back to Overview</button>
                 </Link>
-                {/* Add more buttons or navigation elements as needed */}
             </div>
             <article className="max-w-screen-lg mx-auto prose prose-sm md:prose-base lg:prose-lg prose-slate dark:prose-invert mt-8 mb-20">
                 <h1>{props.fontMatter.title}</h1>
