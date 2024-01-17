@@ -19,6 +19,14 @@ jobs:
           key: "${{ secrets.SSH_KEY }}"
           script: 'echo "SSH connection successful."'
 
+      - name: Build Docker Image
+        run: |
+          docker build -t react-blog /path/to/your/dockerfile
+        working-directory: /home/docker/stacks/blog
+        env:
+          NODE_ENV: production
+          NEXT_TELEMETRY_DISABLED: 1
+
       - name: Deploy via SSH
         uses: tiyee/action-ssh@v1.0.1
         with:
