@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className='text-white bg-gradient-to-r from-slate-950 to-zinc-900'>
+    <html lang="en"  style={{ overscrollBehavior: 'none' }} className='text-white bg-gradient-to-r from-slate-950 to-zinc-900'>
       <body >{children}</body>
     </html>
   )
