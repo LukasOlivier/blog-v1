@@ -3,46 +3,22 @@ name: Deploy to Raspberry Pi
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check SSH Connection
-        uses: appleboy/ssh-action@master
-        with:
-          host: '${{ secrets.HOST }}'
-          username: '${{ secrets.USERNAME }}'
-          port: '${{ secrets.PORT }}'
-          key: "${{ secrets.SSH_KEY }}"
-          script: 'echo "SSH connection successful."'
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Build Docker Image
-        uses: tiyee/action-ssh@v1.0.1
-        with:
-          command: cd /home/docker/stacks/blog && docker build -t react-blog .
-          host: '${{ secrets.HOST }}'
-          username: '${{ secrets.USERNAME }}'
-          port: '${{ secrets.PORT }}'
-          privateKey: "${{ secrets.SSH_KEY }}"
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy via SSH
-        uses: tiyee/action-ssh@v1.0.1
-        with:
-          command: |
-            cd /home/docker/stacks/blog
-      
-            # Check if the Docker container exists
-            if docker ps -a --format '{{.Names}}' | grep blog; then
-              echo "Container exists, restarting..."
-              docker compose restart
-            else
-              echo "Container does not exist, creating a new one..."
-              docker compose up -d
-            fi
-          host: '${{ secrets.HOST }}'
-          username: '${{ secrets.USERNAME }}'
-          port: '${{ secrets.PORT }}'
-          privateKey: "${{ secrets.SSH_KEY }}"
+    - name: Deploy to Raspberry Pi
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} {{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_IP }} -p ${{ secrets.RASPBERRY_PI_PORT }}"cd /path/to/your/project && git pull"
+
