@@ -23,3 +23,9 @@ jobs:
           script: |
             cd /home/docker/stacks/blog
             git pull https://github.com/LukasOlivier/blog.git
+
+            docker compose build --no-cache react-blog
+
+            docker compose stop react-blog
+
+            docker compose up -d react-blog
