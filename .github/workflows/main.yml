@@ -13,20 +13,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Set up SSH key
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa  # Ensure only you have access
-
-      - name: Add SSH key to agent
-        run: ssh-add ~/.ssh/id_rsa
-
       - name: Connect to Raspberry Pi
-        run: |
-          ssh -o StrictHostKeyChecking=no -T ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_IP }} -p ${{ secrets.RASPBERRY_PI_PORT }}
-          cd /home/docker/stacks/blog
-          git pull https://github.com/LukasOlivier/blog.git
-
-      - name: Remove SSH key from agent (optional)
-        run: ssh-keygen -R id_rsa  # Or the key's fingerprint
-
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.RASPBERRY_PI_IP }}
+          port: ${{ secrets.RASPBERRY_PI_PORT }}
+          username: ${{ secrets.RASPBERRY_PI_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/docker/stacks/blog
+            git pull https://github.com/LukasOlivier/blog.git
