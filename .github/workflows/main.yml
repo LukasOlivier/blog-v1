@@ -1,24 +1,32 @@
-name: Deploy to Raspberry Pi
+name: Connect to Raspberry Pi
 
 on:
+  # Trigger on push events to the main branch
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  deploy:
+  connect-to-pi:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa  # Ensure only you have access
 
-    - name: Deploy to Raspberry Pi
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} {{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_IP }} -p ${{ secrets.RASPBERRY_PI_PORT }}"cd /path/to/your/project && git pull"
+      - name: Add SSH key to agent
+        run: ssh-add ~/.ssh/id_rsa
+
+      - name: Connect to Raspberry Pi
+        run: |
+          ssh -o StrictHostKeyChecking=no -T ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_IP }} -p ${{ secrets.RASPBERRY_PI_PORT }}
+          cd /home/docker/stacks/blog
+          git pull https://github.com/LukasOlivier/blog.git
+
+      - name: Remove SSH key from agent (optional)
+        run: ssh-keygen -R id_rsa  # Or the key's fingerprint
 
