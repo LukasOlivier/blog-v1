@@ -1,9 +1,10 @@
 name: Connect to Raspberry Pi
 
 on:
-  # Trigger on push events to the main branch
   push:
-    branches: [ main ]
+    branches:
+      - main  # Adjust this to your main branch name
+  workflow_dispatch: 
 
 jobs:
   connect-to-pi:
@@ -14,12 +15,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Connect to Raspberry Pi
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.RASPBERRY_PI_IP }}
-          port: ${{ secrets.RASPBERRY_PI_PORT }}
           username: ${{ secrets.RASPBERRY_PI_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.RASPBERRY_PI_PORT }}
           script: |
             cd /home/docker/stacks/blog
             git pull https://github.com/LukasOlivier/blog.git
