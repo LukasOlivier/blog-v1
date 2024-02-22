@@ -23,6 +23,6 @@ jobs:
             rm -rf blog
             git clone https://github.com/LukasOlivier/blog.git
             cd blog
-            docker-compose build --no-cache react-blog
-            docker-compose stop react-blog
-            docker-compose up -d react-blog
+            docker compose build --no-cache react-blog
+            docker compose stop react-blog
+            docker compose up -d react-blog
