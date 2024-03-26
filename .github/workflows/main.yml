@@ -27,11 +27,11 @@ jobs:
       
             if docker ps -a --format '{{.Names}}' | grep react-blog; then
               echo "Container exists, restarting..."
-              docker-compose down
-              docker-compose up -d --build
+              docker compose down
+              docker compose up -d --build
             else
               echo "Container does not exist, creating a new one..."
-              docker-compose up -d --build
+              docker compose up -d --build
             fi
           host: '${{ secrets.HOST }}'
           username: '${{ secrets.USERNAME }}'
