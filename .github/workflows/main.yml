@@ -25,15 +25,13 @@ jobs:
           command: |
             cd /home/docker/stacks/blog
       
-            # Check if the Docker container exists
-            if docker ps -a --format '{{.Names}}' | grep portfolio; then
+            if docker ps -a --format '{{.Names}}' | grep react-blog; then
               echo "Container exists, restarting..."
-              docker compose build --no-cache react-blog
-              docker compose restart
+              docker-compose down
+              docker-compose up -d --build
             else
               echo "Container does not exist, creating a new one..."
-              docker compose build --no-cache react-blog
-              docker compose up -d react-blog
+              docker-compose up -d --build
             fi
           host: '${{ secrets.HOST }}'
           username: '${{ secrets.USERNAME }}'
