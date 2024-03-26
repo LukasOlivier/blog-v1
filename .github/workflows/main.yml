@@ -1,28 +1,41 @@
-name: Connect to Raspberry Pi
+name: Deploy to Raspberry Pi
 
 on:
   push:
     branches:
-      - main  # Adjust this to your main branch name
-  workflow_dispatch:
+      - main  
 
 jobs:
-  connect-to-pi:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Connect to Raspberry Pi
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Check SSH Connection
+        uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.RASPBERRY_PI_IP }}
-          username: ${{ secrets.RASPBERRY_PI_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.RASPBERRY_PI_PORT }}
-          script: |
-            cd /home/docker/stacks
-            rm -rf blog
-            git clone https://github.com/LukasOlivier/blog.git
-            cd blog
-            docker compose build --no-cache react-blog
-            docker compose stop react-blog
-            docker compose up -d react-blog
+          host: '${{ secrets.HOST }}'
+          username: '${{ secrets.USERNAME }}'
+          port: '${{ secrets.PORT }}'
+          key: "${{ secrets.SSH_KEY }}"
+          script: 'echo "SSH connection successful."'
+
+      - name: Deploy via SSH
+        uses: tiyee/action-ssh@v1.0.1
+        with:
+          command: |
+            cd /home/docker/stacks/blog
+      
+            # Check if the Docker container exists
+            if docker ps -a --format '{{.Names}}' | grep portfolio; then
+              echo "Container exists, restarting..."
+              docker compose build --no-cache react-blog
+              docker compose restart
+            else
+              echo "Container does not exist, creating a new one..."
+              docker compose build --no-cache react-blog
+              docker compose up -d react-blog
+            fi
+          host: '${{ secrets.HOST }}'
+          username: '${{ secrets.USERNAME }}'
+          port: '${{ secrets.PORT }}'
+          privateKey: "${{ secrets.SSH_KEY }}"
