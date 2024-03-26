@@ -32,7 +32,7 @@ jobs:
             else
               echo "Container does not exist, creating a new one..."
               docker compose build --no-cache react-blog
-              docker compose up -d react-blog
+              docker compose up -d
             fi
           host: '${{ secrets.HOST }}'
           username: '${{ secrets.USERNAME }}'
