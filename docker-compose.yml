@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  app:
+    image: react-blog
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    restart: always
+    container_name: react-blog
+networks: {}
